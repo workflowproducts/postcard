@@ -1,6 +1,6 @@
 {
   "name": "postcard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A database driven application platform using PostgreSQL",
   "main": "index.js",
   "repository": {
