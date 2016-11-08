@@ -223,5 +223,4 @@ exports.quit = function () {
 	} else {
 		postgresqlProc.kill();
 	}
-	process.exit();
 };
