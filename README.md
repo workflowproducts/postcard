@@ -12,7 +12,7 @@ In order to accomplish all this magic, Postcard makes several interesting choice
 Electron (by Github) is an application shell that provides you with several important components. The first is the web engine from Chromium, which renders your HTML and Javascript just like a browser. In order to display your HTML and Javascript files you need a webserver, so Electron provides and embeds a Node server. Finally, Electron helps you package your application so that you can easily distribute it to Linux, Mac and Windows computers. Electron is a powerful combination of technologies and effort.
 
 #### PostgreSQL
-PostgreSQL is an enterprise class, open source object-relational database. Postcard brings statically compiled binaries of PostgreSQL for Linux, Mac and Windows into Node modules.
+PostgreSQL is an enterprise class, open source object-relational database. Postcard brings portable binaries of PostgreSQL for Linux, Mac and Windows into Node modules.
 
 Postcard is still pre-release. Please ignore it for now.
 
