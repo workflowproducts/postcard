@@ -58,7 +58,9 @@ exports.init = function (strAppName, callback) {
 			function() {
 				// Create the data directory
 				fs.mkdirsSync(os.homedir() + '/.' + strAppName + '/');
-				hidefile.hideSync(os.homedir() + '/.' + strAppName + '/');
+				if (!hidefile.isHiddenSync(os.homedir() + '/.' + strAppName + '/')) {
+					hidefile.hideSync(os.homedir() + '/.' + strAppName + '/');
+				}
 				fs.mkdirsSync(os.homedir() + '/.' + strAppName + '/data');
 
 				const int_postgres_port = parseInt(Math.random().toString().substring(2)) % (65535 - 1024) + 1024;
