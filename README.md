@@ -29,7 +29,7 @@ There are two functions in Postcard:
 `postcard.quit()`
 - You need to call this function when the process is going to exit. If you don't then PostgreSQL will keep running and you won't be able to start it the next time.
 
-### Full example
+## Example
 
 #### index.js
 
