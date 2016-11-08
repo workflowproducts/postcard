@@ -1,6 +1,6 @@
 {
   "name": "postcard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A database driven application platform using PostgreSQL",
   "main": "index.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "git+https://github.com/workflowproducts/postcard.git"
   },
   "scripts": {
-	  "start": "electron ."
+    "start": "electron ."
   },
   "keywords": [
     "envelope",
