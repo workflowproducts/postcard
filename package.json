@@ -1,6 +1,6 @@
 {
   "name": "postcard",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A database driven application platform using PostgreSQL",
   "main": "index.js",
   "repository": {
@@ -23,13 +23,13 @@
   },
   "homepage": "https://github.com/workflowproducts/postcard#readme",
   "dependencies": {
-    "electron-context-menu": "^0.6.0",
-    "electron-window-state": "^3.1.0",
+    "electron-context-menu": "^0.15.1",
+    "electron-window-state": "^5.0.3",
     "fs-extra": "^1.0.0",
     "hidefile": "^2.0.0"
   },
   "devDependencies": {
-    "electron": "^1.4.5"
+    "electron": "^7.1.2"
   },
   "optionalDependencies": {
     "postgresql-portable-darwin64": "9.6.0-build2",

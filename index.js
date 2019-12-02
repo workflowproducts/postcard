@@ -14,7 +14,9 @@ const BrowserWindow = electron.BrowserWindow;
 const child_process = require('child_process');
 var postgresqlProc = null;
 
-const postgresql_module_name = 'node_modules/postgresql-portable-' + (os.platform() != 'win32' ? (os.platform() + (os.arch() === 'x64' ? '64' : '32')) : 'windows');
+//const postgresql_module_name = 'node_modules/postgresql-portable-' + (os.platform() != 'win32' ? (os.platform() + (os.arch() === 'x64' ? '64' : '32')) : 'windows');
+//const postgresql_module_path = require.resolve('postgresql-portable-' + (os.platform() != 'win32' ? (os.platform() + (os.arch() === 'x64' ? '64' : '32')) : 'windows'));
+const postgresql_module_path = app.getAppPath() + '/' + 'node_modules/postgresql-portable-' + (os.platform() != 'win32' ? (os.platform() + (os.arch() === 'x64' ? '64' : '32')) : 'windows');
 
 exports.init = function (strAppName, callback) {
 	try {
@@ -22,11 +24,11 @@ exports.init = function (strAppName, callback) {
 		fs.statSync(os.homedir() + '/.' + strAppName + '/data');
 
 		// Start postgres
-		postgresqlProc = child_process.spawn(path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/postgres' + (process.platform == 'win32' ? '.exe' : '')), [
+		postgresqlProc = child_process.spawn(path.normalize(postgresql_module_path + '/bin/postgres' + (process.platform == 'win32' ? '.exe' : '')), [
 			'-D', path.normalize(os.homedir() + '/.' + strAppName + '/data'),
 			'-k', '/tmp'
 		], {
-			cwd: path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/')
+			cwd: path.normalize(postgresql_module_path + '/bin/')
 		});
 		postgresqlProc.stderr.on('data', function(data) {
 			console.log('postgres ' + postgresqlProc.pid + ' got data:\n' + data);
@@ -54,7 +56,7 @@ exports.init = function (strAppName, callback) {
 			'	   <progress style="width: 100%; display: inline-block; text-align: center;" value="0" max="1000" />' +
 			'</center>\';' +
 			'document.body.style.background = \'none\';' +
-			'document.body.style.overflow = \'none\';',
+			'document.body.style.overflow = \'none\';').then(
 			function() {
 				// Create the data directory
 				fs.mkdirsSync(os.homedir() + '/.' + strAppName + '/');
@@ -64,12 +66,12 @@ exports.init = function (strAppName, callback) {
 				fs.mkdirsSync(os.homedir() + '/.' + strAppName + '/data');
 
 				const int_postgres_port = parseInt(Math.random().toString().substring(2)) % (65535 - 1024) + 1024;
-				postgresqlProc = child_process.spawn(path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/initdb' + (process.platform == 'win32' ? '.exe' : '')), [
+				postgresqlProc = child_process.spawn(path.normalize(postgresql_module_path + '/bin/initdb' + (process.platform == 'win32' ? '.exe' : '')), [
 					'-D', path.normalize(os.homedir() + '/.' + strAppName + '/data'),
 					'-E', 'UTF8',
 					'-U', 'postgres'
 				], {
-					cwd: path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/')
+					cwd: path.normalize(postgresql_module_path + '/bin/')
 				});
 
 				// Every line of stdout advances the progress bar
@@ -91,11 +93,11 @@ exports.init = function (strAppName, callback) {
 						'\n\nport = ' + int_postgres_port + '\nlog_destination = stderr\nlogging_collector = off\n\n');
 
 					// spawn postgres
-					postgresqlProc = child_process.spawn(path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/postgres' + (process.platform == 'win32' ? '.exe' : '')), [
+					postgresqlProc = child_process.spawn(path.normalize(postgresql_module_path + '/bin/postgres' + (process.platform == 'win32' ? '.exe' : '')), [
 						'-D', path.normalize(os.homedir() + '/.' + strAppName + '/data'),
 						'-k', '/tmp'
 					], {
-						cwd: path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/')
+						cwd: path.normalize(postgresql_module_path + '/bin/')
 					});
 
 					postgresqlProc.stdout.on('data', function(data) {
@@ -111,13 +113,13 @@ exports.init = function (strAppName, callback) {
 						// When we are ready
 						if (data.indexOf('database system is ready to accept connections') > -1) {
 							// Run init.sql againts the database
-							var psqlProc = child_process.spawn(path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/psql' + (process.platform == 'win32' ? '.exe' : '')), [
+							var psqlProc = child_process.spawn(path.normalize(postgresql_module_path + '/bin/psql' + (process.platform == 'win32' ? '.exe' : '')), [
 								'-f', path.normalize(app.getAppPath() + '/init.sql'),
 								'-h', (process.platform == 'win32' ? '127.0.0.1' : '/tmp'),
 								'-p', int_postgres_port,
 								'-U', 'postgres'
 							], {
-								cwd: path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/')
+								cwd: path.normalize(postgresql_module_path + '/bin/')
 							});
 
 							psqlProc.stdout.on('data', function(data) {
@@ -147,11 +149,11 @@ exports.init = function (strAppName, callback) {
 								}
 								// Restart postgresql (by listening for close, and then killing)
 								postgresqlProc.on('close', function(code) {
-									postgresqlProc = child_process.spawn(path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/postgres' + (process.platform == 'win32' ? '.exe' : '')), [
+									postgresqlProc = child_process.spawn(path.normalize(postgresql_module_path + '/bin/postgres' + (process.platform == 'win32' ? '.exe' : '')), [
 										'-D', path.normalize(os.homedir() + '/.' + strAppName + '/data'),
 										'-k', '/tmp'
 									], {
-										cwd: path.normalize(app.getAppPath() + '/' + postgresql_module_name + '/bin/')
+										cwd: path.normalize(postgresql_module_path + '/bin/')
 									});
 
 									postgresqlProc.stdout.on('data', function(data) {
