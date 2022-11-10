@@ -29,7 +29,7 @@
     "hidefile": "^2.0.0"
   },
   "devDependencies": {
-    "electron": "^7.1.2"
+    "electron": "^18.3.7"
   },
   "optionalDependencies": {
     "postgresql-portable-darwin64": "9.6.0-build2",
